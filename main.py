@@ -3,8 +3,8 @@ import re
 
 # Path to the Obsidian Vault
 vault_path = input("Please Enter the Vault Path: ")
-
-VAULT_PATH = "/Users/husband/Obsidian/Vault 111/Resources/Market Notes/Macro"
+topic_search = input("What Topic are you searching: ")
+append_var = input("What do you want to add: ")
 
 
 def process_file(file_path):
@@ -25,7 +25,7 @@ def process_file(file_path):
 
     # Check if 'Topic' contains 'Economics'
     topic_match = re.search(r"^Topic:\s*(.*)", "\n".join(frontmatter), re.MULTILINE)
-    if not topic_match or "Finance" not in topic_match.group(1):
+    if not topic_match or topic_search not in topic_match.group(1):
         return
 
     # # Check if "#economics" already exists
@@ -34,13 +34,13 @@ def process_file(file_path):
 
     # Append the tag
     with open(file_path, "a", encoding="utf-8") as f:
-        f.write("\n\n#finance\n")
+        f.write(f"\n\n{append_var}\n")
 
     print(f"Updated: {file_path}")
 
 
 def scan_vault():
-    for root, _, files in os.walk(VAULT_PATH):
+    for root, _, files in os.walk(vault_path):
         for file in files:
             if file.endswith(".md"):
                 process_file(os.path.join(root, file))
